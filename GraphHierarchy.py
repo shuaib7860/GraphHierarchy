@@ -81,8 +81,6 @@ def DemocracyCoefficient(graph):
 def InfluenceCentrality(graph, node):
     masked = np.ma.masked_equal(HierarchicalDifferences(graph), 0)
     IC = masked[node].mean()
-    return IC
+    return 1 - IC
 
-def InfluenceCentrality2(graph, node):
-    return HierarchicalDifferences(graph)[node].sum() / (HierarchicalDifferences(graph)[node] != 0).sum()
      
