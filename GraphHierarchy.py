@@ -75,7 +75,7 @@ def DemocracyCoefficient(graph):
 #Do we just want the mean of the hierarchical differences over a node or do we also want the set of differences
 
 # This is applying the democracy coefficient to a single node and is a measure of that nodes influence
-# If the function returns masked that means the influence centrality of the node is zero 
+# If the function returns masked that means the influence centrality of the node is 1, i.e basal node 
 # The node variable call in the function is the index position/networkx numrical label of the nodes
 # If node label/node index is out of bounds this also means the influence centrality is zero
 def InfluenceCentrality(graph, node):
