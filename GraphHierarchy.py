@@ -1,7 +1,8 @@
 import numpy as np 
 import networkx as nx
 from statistics import mean, pstdev
-from scipy.sparse import coo_matrix, csr_matrix, diags
+from scipy.sparse import coo_matrix, csr_matrix, diags, 
+from scipe.sparse.linalg import lsqr
 
 
 #The index postion of the element in the vector matches the networkx label of the node, so 0th element of vector is 0th labelled node. 
@@ -14,22 +15,19 @@ def HierarchicalLevel(graph):
     s = Lt_in * k_in
     return s
 # maybe return s as a dictionary with the key as the label of the node and the value is the gtl
+# Could implement linear solver for normal numpy array in above code
 
 
 # This is the more efficient piece of code, I think, need to confirm; confirmed 
+# k needs to be an array and so the csr function does have a toarray method but the normal numpy matrix object does not
 def HierarchicalLevelSparse(graph):
     A = nx.adjacency_matrix(graph).transpose()
     k_in = csr_matrix(A.sum(axis=1))
     D_in = diags(A.sum(axis=1).A1, 0)
     L_in = D_in - A
-    Lt_in = np.linalg.pinv(L_in.toarray())
-    s = csr_matrix(Lt_in) * k_in
-    return s.toarray()
+    s = lsqr(L_in, k_in.toarray())
+    return s
 
-
-# Do I need to bother converting the hierarchical diffrence matrix to a sparse matrix? 
-# Because I do no further manipulation with that matrix object. 
-# Creating the sparse_coo array is much more efficient then creating the normal array 
 def HierarchicalDifferences(graph):
     A = nx.adjacency_matrix(graph).transpose()
     s = HierarchicalLevel(graph)
