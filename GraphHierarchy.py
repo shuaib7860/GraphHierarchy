@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 from statistics import mean, pstdev
 from scipy.sparse import coo_matrix, csr_matrix, diags
-from scipe.sparse.linalg import lsqr
+from scipy.sparse.linalg import lsqr
 
 
 #The index postion of the element in the vector matches the networkx label of the node, so 0th element of vector is 0th labelled node. 
