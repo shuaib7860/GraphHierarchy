@@ -1,12 +1,12 @@
 import numpy as np 
 import networkx as nx
 from statistics import mean, pstdev
-from scipy.sparse import coo_matrix, csr_matrix, diags, 
+from scipy.sparse import coo_matrix, csr_matrix, diags
 from scipe.sparse.linalg import lsqr
 
 
 #The index postion of the element in the vector matches the networkx label of the node, so 0th element of vector is 0th labelled node. 
-def HierarchicalLevel(graph):
+def HierarchicalLevels(graph):
     A = nx.adjacency_matrix(graph).transpose()
     k_in = A.sum(axis=1)
     D_in = np.diagflat(k_in) #check to make sure this is a sparse matrix, it's not sparse
@@ -20,13 +20,14 @@ def HierarchicalLevel(graph):
 
 # This is the more efficient piece of code, I think, need to confirm; confirmed 
 # k needs to be an array and so the csr function does have a toarray method but the normal numpy matrix object does not
-def HierarchicalLevelSparse(graph):
+def HierarchicalLevelsSparse(graph):
     A = nx.adjacency_matrix(graph).transpose()
     k_in = csr_matrix(A.sum(axis=1))
     D_in = diags(A.sum(axis=1).A1, 0)
     L_in = D_in - A
     s = lsqr(L_in, k_in.toarray())
     return s
+
 
 def HierarchicalDifferences(graph):
     A = nx.adjacency_matrix(graph).transpose()
@@ -81,4 +82,6 @@ def InfluenceCentrality(graph, node):
     IC = masked[node].mean()
     return 1 - IC
 
-     
+# Return influence centrality for every node     
+    
+#Add in another function which calculates ghe hierarchical levels, differences and influence centrality in one go
