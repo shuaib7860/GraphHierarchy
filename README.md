@@ -22,8 +22,6 @@ pip install GraphHierarchy
 ```
 And of course GraphHierarchy itself is open source with a [public repository] on GitHub. GraphHierarchy requires Python 3.5 or above to run. 
 
-Install the dependencies and devDependencies and start the server.
-
 ## How to use GraphHierarchy
 
 Let's import the module after you have installed it, see installation instructions above for more details on how to install the GraphHierarchy module.
