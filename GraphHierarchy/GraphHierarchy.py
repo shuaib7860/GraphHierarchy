@@ -95,7 +95,7 @@ def hierarchical_coherence(graph, weight):
 
 # returns a measure of equitable controllability over the full graph/network
 def democracy_coefficient(graph, weight):
-    """Returns the demicracy coeffcient of a graph, a topological metric
+    """Returns the democracy coeffcient of a graph, a topological metric
     
     Parameters
     ----------
