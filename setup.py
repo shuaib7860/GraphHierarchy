@@ -1,7 +1,7 @@
-from distutils.core import setup
+import setuptools
 
 
-setup(
+setuptools.setup(
   name = 'GraphHierarchy',
   packages = ['GraphHierarchy'],   
   version = '0.1',      
