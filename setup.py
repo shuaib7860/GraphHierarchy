@@ -15,7 +15,7 @@ setuptools.setup(
   install_requires=[
           'numpy',
           'scipy',
-          'networkx'
+          'networkx',
           'statistics'
       ],
   classifiers=[
