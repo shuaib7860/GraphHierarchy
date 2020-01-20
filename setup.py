@@ -1,16 +1,25 @@
 import setuptools
 
 
+LONG_DESCRIPTION = """
+**GraphHieerarchy** is a python package that calculates the Hierarchical levels of nodes in a networks as well as hierarchical coherence of a network structure. 
+Hierarchical levels are the mathematical generalisation of the trophic analysis of networks. Trophic levels and hence trophic coherence can be defined only on networks with well defined sources and so trophic analysis of networks had been restricted to the ecological domain, until now. 
+Graph Hierarchy is a python package that allows for analysis of all network structures via the trophic levels and coherence approach. 
+Trophic coherence, a measure of a network’s hierarchical organisation, has been shown to be linked to a network’s structural and dynamical aspects. 
+In GraphHierarchy we have developed the python code which implements the mathematical generalisation of the trophic coherence theory to all networks. See citation paper for more details.
+.. _GitHub: https://github.com/shuaib7860/GraphHierarchy
+"""
+
 setuptools.setup(
   name = 'GraphHierarchy',
   packages = ['GraphHierarchy'],   
-  version = '0.1',      
+  version = '0.2',      
   license='MIT',        
-  description = 'A module calcualting quantities related to a network metric known as graph hierachy, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358.',   # Give a short description about your library
+  description = 'A module calculating quantities related to a network metric known as graph hierachy, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358.',   # Give a short description about your library
   author = 'Choudhry Shuaib',                   
   author_email = 'cshuaib@outlook.com',      
   url = 'https://github.com/shuaib7860/GraphHierarchy',   
-  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.1.tar.gz',    
+  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.2.tar.gz',    
   keywords = ['Graph Hierarchy', 'Trophic Coherence', 'Hierarchical Coherence', 'Trophic Levels'],
   install_requires=[
           'numpy',
