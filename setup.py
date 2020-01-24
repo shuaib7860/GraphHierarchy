@@ -2,7 +2,7 @@ import setuptools
 
 
 LONG_DESCRIPTION = """
-**GraphHieerarchy** is a python package that calculates the Hierarchical levels of nodes in a networks as well as hierarchical coherence of a network structure. 
+**GraphHierarchy** is a python package that calculates the Hierarchical levels of nodes in a networks as well as hierarchical coherence of a network structure. 
 Hierarchical levels are the mathematical generalisation of the trophic analysis of networks. Trophic levels and hence trophic coherence can be defined only on networks with well defined sources and so trophic analysis of networks had been restricted to the ecological domain, until now. 
 Graph Hierarchy is a python package that allows for analysis of all network structures via the trophic levels and coherence approach. 
 Trophic coherence, a measure of a network’s hierarchical organisation, has been shown to be linked to a network’s structural and dynamical aspects. 
