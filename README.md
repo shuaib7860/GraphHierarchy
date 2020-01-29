@@ -10,7 +10,7 @@ Trophic levels and hence trophic coherence can be defined only on networks with 
   - Calculate the matrix of hierarchical differences for any graph/network
   - Calculate the mean and standard deviation of the distribution of hierarchical differences 
   - Calculate the democracy coefficient for any graph
-  - Calculate the influence centrality for any node in a graph or for every single node in the graph in single instance of code.
+  - Calculate the influence centrality for any node in a graph or for every single node in the graph in a single instance of code.
 
 
 ### Installation
