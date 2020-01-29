@@ -13,14 +13,14 @@ In GraphHierarchy we have developed the python code which implements the mathema
 setuptools.setup(
   name = 'GraphHierarchy',
   packages = ['GraphHierarchy'],   
-  version = '0.2',      
+  version = '0.3',      
   license='MIT',        
   description = 'A module calculating quantities related to a network metric known as graph hierachy, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358.',   # Give a short description about your library
   long_description = LONG_DESCRIPTION,
   author = 'Choudhry Shuaib',                   
   author_email = 'cshuaib@outlook.com',      
   url = 'https://github.com/shuaib7860/GraphHierarchy',   
-  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.3.tar.gz',    
+  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.3.tar.gz',
   keywords = ['Graph Hierarchy', 'Trophic Coherence', 'Hierarchical Coherence', 'Trophic Levels'],
   install_requires=[
           'numpy',
