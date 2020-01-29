@@ -34,7 +34,7 @@ import GraphHierarchy as gh
 graph = nx.gnr_graph(20, 0.4)
 nx.draw_networkx(graph)
 ```
-The third line of code in the above script is a function call to visualise the graph. To calculate the hierarchical levels all one needs to write is:
+The fourth line of code in the above script is a function call to visualise the graph. To calculate the hierarchical levels all one needs to write is:
 
 ```sh
 gh.hierarchical_levels(graph, None)
