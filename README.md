@@ -34,12 +34,12 @@ import GraphHierarchy as gh
 graph = nx.gnr_graph(20, 0.4)
 nx.draw_networkx(graph)
 ```
-The fourth line of code in the above script is a function call to visualise the graph. To calculate the hierarchical levels all one needs to write is:
+The fourth line of code in the above script is a function call to visualise the graph. To calculate the hierarchical levels, there are two parameters required, a network object, and a weight parameter. In the case of no weight parameter all one needs to write is:
 
 ```sh
 gh.hierarchical_levels(graph, None)
 ```
-This returns an n-dimensional array of the hierarchical levels in the ordering and with the labelling of graph.nodes(). If one wants to calculate the hierarchical differences and associated mean and standard deviation of this distribution:
+This returns an n-dimensional array of the hierarchical levels in the ordering and with the labelling of graph.nodes(). When there is a weight parameter then the attribute should be input as a string as the second parameter in the function call. If one wants to calculate the hierarchical differences and associated mean and standard deviation of this distribution:
 
 ```sh
 gh.hierarchical_differences(graph, None)
