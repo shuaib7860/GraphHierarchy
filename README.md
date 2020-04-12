@@ -39,13 +39,13 @@ The fourth line of code in the above script is a function call to visualise the 
 ```sh
 gh.hierarchical_levels(graph, None)
 ```
-This returns an $N \times 1$ dimensional array of the hierarchical levels indexed by the nodes in the ordering of graph.nodes. When there is a weight parameter, the corresponding attribute should be input as a string as the second parameter in the function call. If one wants to calculate the hierarchical differences:
+This returns an Nx1 dimensional array of the hierarchical levels indexed by the nodes in the ordering of graph.nodes. When there is a weight parameter, the corresponding attribute should be input as a string as the second parameter in the function call. If one wants to calculate the hierarchical differences:
 
 ```sh
 gh.hierarchical_differences(graph, None)
 ```
 
-This returns a weighted adjacency matrix, an $N \times N $ dimensional array with the weights representing the hierarchical differences. 
+This returns a weighted adjacency matrix, an NxN dimensional array with the weights representing the hierarchical differences. 
 
 The function hierarchical coherence returns the hierarchical differences and associated mean and standard deviation of this distribution:
 
@@ -72,7 +72,7 @@ This returns a single numerical value. We can also work out the influence centra
 gh.influence_centrality(graph, None)
 ```
 
-The return of this function is an $N \times 1$ dimensional array indexed by the nodes with values of their respective influence centralities in the same order as graph.nodes(). This exhausts all the functions that are currently available in the module but we hope to add some more in newer versions of the module. 
+The return of this function is an Nx1 dimensional array indexed by the nodes with values of their respective influence centralities in the same order as graph.nodes(). This exhausts all the functions that are currently available in the module but we hope to add some more in newer versions of the module. 
 
 
 # More Info
