@@ -15,7 +15,7 @@ Trophic levels and hence trophic coherence can be defined only on networks with 
 
 ### Installation
 
-The dependencies of the GraphHierarchy module are numpy, scipy, networkx and the statistics module. GraphHierarchy can be installed via the pip command.
+The dependencies of the GraphHierarchy module are numpy, scipy and networkx modules. GraphHierarchy can be installed via the pip command.
 
 ```sh
 pip install GraphHierarchy
@@ -26,7 +26,7 @@ And of course GraphHierarchy itself is open source with a [public repository] on
 
 Let's import the module after you have installed it, see installation instructions above for more details on how to install the GraphHierarchy module.
 
-Firstly we create an instance of a networkx graph which will be the network we analyse with our GraphHierarchical functions.
+Firstly we create an instance of a networkx graph which will be the network we analyse utilising our GraphHierarchical functions.
 
 ```sh
 import networkx as nx
@@ -39,40 +39,40 @@ The fourth line of code in the above script is a function call to visualise the 
 ```sh
 gh.hierarchical_levels(graph, None)
 ```
-This returns an n-dimensional array of the hierarchical levels in the ordering and with the labelling of graph.nodes(). When there is a weight parameter then the attribute should be input as a string as the second parameter in the function call. If one wants to calculate the hierarchical differences and associated mean and standard deviation of this distribution:
+This returns an n-dimensional array of the hierarchical levels in the ordering/indexing of graph.nodes(). When there is a weight parameter, the corresponding attribute should be input as a string as the second parameter in the function call. If one wants to calculate the hierarchical differences:
 
 ```sh
 gh.hierarchical_differences(graph, None)
 ```
 
-This returns a three element tuple, the first element is an nxm dimensional array representing the hierarchical differences as an adjacency matrix for all the non-zero values. The second and third element of the tuple are the mean and the standard deviation of this distribution of differences respectively. 
+This returns a weighted adjacency matrix, NxN dimensional array with the weights representing the hierarchical differences. 
 
-If one requires the hierarchical levels, hierarchical differences and associated mean and standard deviation in one go:
+There is a function which returns the hierarchical differences and associated mean and standard deviation of this distribution:
 
 ```sh
 gh.hierarchical_coherence(graph, None)
 ```
 
-This returns a four element tuple, the first element is an n dimensional array representing the hierarchical levels, the second element is an nxm dimensional array representing the hierarchical differences as an adjacency matrix for all the non-zero values. The third and fourth element of the tuple are the mean and the standrard deviation of this distribution of differences respectively. 
+This returns a three element tuple, the first element is the hierarchical differences adjacency matrix. The second and third elements of the tuple are the mean of this distribution of hierarchical differences and the standard deviation of this distribution of differences respectively. The standard deviation of the distribution is known as the hierarchical coherence and is an important metric which gives a measure of a network's organisation. 
 
-We can also calculate the democracy coefficient for a graph:
+We can also calculate the democracy coefficient, a topological metric, for a graph:
 
 ```sh
 gh.democracy_coefficient(graph, None)
 ```
 
-This returns a single value, which is a topological metric. We can also work out the influence centrality for the node of a graph:
+This returns a single value. We can also work out the influence centrality for the node of a graph:
 
 ```sh
-gh.influence_centrality(graph, None, node)
+gh.node_influence_centrality(graph, None, node)
 ```
 this returns a single numerical value. We can also work out the influence centrality for every single node in the graph:
 
 ```sh
-gh.total_influence_centrality(graph, None)
+gh.influence_centrality(graph, None)
 ```
 
-The return of this function is a list of numerical values which are the influence centralities for nodes ordered according to graph.nodes(). This exhausts all the functions that are currently available in the module but we hope to add some more in newer versions of the module. 
+The return of this function is a one dimensional array of numerical values which are the influence centralities for nodes ordered /indexed according to graph.nodes(). This exhausts all the functions that are currently available in the module but we hope to add some more in newer versions of the module. 
 
 
 # More Info
