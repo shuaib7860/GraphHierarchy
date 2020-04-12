@@ -15,18 +15,17 @@ setuptools.setup(
   packages = ['GraphHierarchy'],   
   version = '0.4',      
   license='MIT',        
-  description = 'A module calculating quantities related to a network metric known as graph hierachy, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358.',   # Give a short description about your library
+  description = 'A module calculating quantities related to a network metric known as trophic coherence but nw egenralised to all networks, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358.',   # Give a short description about your library
   long_description = LONG_DESCRIPTION,
   author = 'Choudhry Shuaib',                   
   author_email = 'cshuaib@outlook.com',      
   url = 'https://github.com/shuaib7860/GraphHierarchy',   
-  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.4.tar.gz',
-  keywords = ['Graph Hierarchy', 'Trophic Coherence', 'Hierarchical Coherence', 'Trophic Levels'],
+  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.5.tar.gz',
+  keywords = ['Graph Hierarchy', 'Trophic Coherence', 'Hierarchical Coherence', 'Trophic Levels', 'Hierarchical Levels', 'Influence Centrality', 'Democracy Coefficient'],
   install_requires=[
           'numpy',
           'scipy',
-          'networkx',
-          'statistics'
+          'networkx'
       ],
   classifiers=[
     'Development Status :: 5 - Production/Stable',     
