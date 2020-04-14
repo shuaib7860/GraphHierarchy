@@ -81,13 +81,13 @@ def sparse_hierarchical_differences(graph, weight):
     return TD
 
 
-def sparse_matrix_mean(sparse_matrix):
+def sparse_matrix_mean(sparse_matrix, adjacency_matrix):
     '''A mean calculation for sparse matrices that does not count the zero elements'''
     
     if sparse_matrix.sum(dtype=float) == 0:
         return 0
     else:
-        return (sparse_matrix.sum(dtype=float)) / float(sparse_matrix.count_nonzero())
+        return (sparse_matrix.sum(dtype=float)) / float(adjacency_matrix.count_nonzero())
 
 
 def hierarchical_coherence(graph, weight):
@@ -121,9 +121,10 @@ def hierarchical_coherence(graph, weight):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
+    A = adjacency_matrix(graph, weight=weight).transpose()
     TD = sparse_hierarchical_differences(graph, weight=weight)
-    std =  (sparse_matrix_mean(TD.power(2)) - sparse_matrix_mean(TD)**2)**0.5
-    return TD.toarray(), sparse_matrix_mean(TD), std
+    std =  (sparse_matrix_mean(TD.power(2), A) - sparse_matrix_mean(TD, A)**2)**0.5
+    return TD.toarray(), sparse_matrix_mean(TD, A), std
 
 
 # Returns a measure of equitable controllability over the full graph/network
@@ -148,8 +149,9 @@ def democracy_coefficient(graph, weight):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
+    A = adjacency_matrix(graph, weight=weight).transpose()
     TD = sparse_hierarchical_differences(graph, weight=weight)
-    return 1 - sparse_matrix_mean(TD)
+    return 1 - sparse_matrix_mean(TD, A)
 
 
 def influence_centrality(graph, weight):
@@ -174,11 +176,12 @@ def influence_centrality(graph, weight):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
+    A = adjacency_matrix(graph, weight=weight).transpose()
     TD = sparse_hierarchical_differences(graph, weight=weight)
     m = zeros((TD.shape[0], 1))
-    for i in range(TD.shape[0]):
-        m[i] = sparse_matrix_mean(TD[i])
-    return ones((TD.shape[0], 1)) - m
+    for i in range(TD.get_shape()[0]):
+        m[i] = sparse_matrix_mean(TD[i], A)
+    return ones((TD.get_shape()[0], 1)) - m
 
 
 def node_influence_centrality(graph, weight, node):
@@ -206,4 +209,23 @@ def node_influence_centrality(graph, weight, node):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    return 1 - sparse_matrix_mean(sparse_hierarchical_differences(graph, weight)[node])
+    A = adjacency_matrix(graph, weight=weight).transpose()
+    return 1 - sparse_matrix_mean(sparse_hierarchical_differences(graph, weight)[node], A)
+
+
+def hierarchical_metrics(graph, weight):
+    ''' This function returns all the foundational node and graph metrics a hierarchical/trophic approach yields.
+        
+    '''
+    
+    A = adjacency_matrix(graph, weight=weight).transpose()
+    s = hierarchical_levels(graph, weight=weight)
+    TD = A.copy()
+    TD = TD.astype(float)
+    
+    for i, j in zip(TD.nonzero()[0], TD.nonzero()[1]):
+        TD[i,j] = s[i] - s[j]
+   
+    std = (sparse_matrix_mean(TD.power(2), A) - sparse_matrix_mean(TD, A)**2)**0.5
+    
+    return s, influence_centrality(graph, weight), TD, sparse_matrix_mean(TD, A), std 
