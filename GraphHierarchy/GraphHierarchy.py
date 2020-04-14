@@ -82,7 +82,8 @@ def sparse_hierarchical_differences(graph, weight):
 
 
 def sparse_matrix_mean(sparse_matrix, adjacency_matrix):
-    '''A mean calculation for sparse matrices that does not count the zero elements'''
+    '''A mean calculation for sparse matrices that does not count the zero elements. 
+       So it calculates the mean of the hierarchical differences over the all incoming edges'''
     
     if sparse_matrix.sum(dtype=float) == 0:
         return 0
@@ -180,7 +181,7 @@ def influence_centrality(graph, weight):
     TD = sparse_hierarchical_differences(graph, weight=weight)
     m = zeros((TD.shape[0], 1))
     for i in range(TD.get_shape()[0]):
-        m[i] = sparse_matrix_mean(TD[i], A)
+        m[i] = sparse_matrix_mean(TD[i], A[i])
     return ones((TD.get_shape()[0], 1)) - m
 
 
@@ -210,11 +211,11 @@ def node_influence_centrality(graph, weight, node):
     arXiv preprint arXiv:1908.04358."""
     
     A = adjacency_matrix(graph, weight=weight).transpose()
-    return 1 - sparse_matrix_mean(sparse_hierarchical_differences(graph, weight)[node], A)
+    return 1 - sparse_matrix_mean(sparse_hierarchical_differences(graph, weight)[node], A[node])
 
 
 def hierarchical_metrics(graph, weight):
-    ''' This function returns all the foundational node and graph metrics a hierarchical/trophic approach yields.
+    ''' This function returns all the foundational node, edge and graph metrics a hierarchical/trophic approach yields.
         
     '''
     
