@@ -13,14 +13,14 @@ See Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and
 setuptools.setup(
   name = 'GraphHierarchy',
   packages = ['GraphHierarchy'],   
-  version = '0.8',      
+  version = '0.9',      
   license='MIT',        
   description = 'A module calculating quantities related to a network metric known as trophic coherence but now generalised to all networks, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358 for more details.',
   long_description = LONG_DESCRIPTION,
   author = 'Choudhry Shuaib',                   
   author_email = 'cshuaib@outlook.com',      
   url = 'https://github.com/shuaib7860/GraphHierarchy',   
-  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.8.tar.gz',
+  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v0.9.tar.gz',
   keywords = ['Graph Hierarchy', 'Trophic Coherence', 'Hierarchical Coherence', 'Trophic Levels', 'Hierarchical Levels', 'Influence Centrality', 'Democracy Coefficient'],
   install_requires=[
           'numpy',
