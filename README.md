@@ -53,7 +53,7 @@ The function hierarchical coherence returns the hierarchical differences and ass
 gh.hierarchical_coherence(graph, None)
 ```
 
-This returns a three element tuple, the first element is the hierarchical differences adjacency matrix. The second and third elements of the tuple are the mean of this distribution of hierarchical differences and the standard deviation of this distribution of differences respectively. The standard deviation of the distribution is known as the hierarchical coherence and is an important metric which gives a measure of a network's organisation and structure. 
+This returns a three element tuple, the first element is the hierarchical differences adjacency matrix. The second and third elements of the tuple are the mean of this distribution of hierarchical differences and the standard deviation of this distribution of differences respectively. The standard deviation of the distribution is known as the hierarchical coherence and is an important metric which gives a quantitive measure of a network's organisation and structure. 
 
 We can also calculate the democracy coefficient, a topological metric, for a graph:
 
