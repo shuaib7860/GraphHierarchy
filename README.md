@@ -3,7 +3,7 @@
 **Citation info**:  Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019), Graph hierarchy and spread of infections, arXiv preprint arXiv:1908.04358
 
 ## Overview
-Trophic levels and hence trophic coherence can be defined only on networks with well defined sources. Trophic coherence, a measure of a network’s hierarchical organisation, has been shown to be linked to a network’s structural and dynamical aspects. Thus trophic analysis of networks had been restricted to the ecological domain, until now. In GraphHierarchy we have created the python code which implements the mathematical generalisation of the trophic coherence theory to all networks. See citation info for more details. 
+Trophic levels and hence trophic incoherence can be defined only on networks with well defined sources. Trophic incoherence, a measure of a network’s hierarchical organisation, has been shown to be linked to a network’s structural and dynamical aspects. Thus trophic analysis of networks had been restricted to the ecological domain, until now. In GraphHierarchy we have created the python code which implements the mathematical generalisation of the trophic coherence theory to all networks. See citation info for more details. 
 
 ## Features
   - Calculate hierarchical levels for any graph
@@ -47,13 +47,13 @@ gh.forward_hierarchical_differences(graph, None)
 
 This returns a weighted adjacency matrix, an $N \times N $ dimensional array with the weights representing the forward hierarchical differences. 
 
-The function forward hierarchical coherence returns the forward hierarchical differences and associated mean and standard deviation of this distribution:
+The function forward hierarchical incoherence returns the forward hierarchical differences and associated mean and standard deviation of this distribution:
 
 ```sh
 gh.forward_hierarchical_incoherence(graph, None)
 ```
 
-This returns a three element tuple, the first element is the forward hierarchical differences adjacency matrix. The second and third elements of the tuple are the mean of this distribution of forward hierarchical differences and the standard deviation of this distribution of differences respectively. The standard deviation of the distribution is known as the forward hierarchical coherence and is an important metric which gives a measure of a network's organisation and structure. 
+This returns a three element tuple, the first element is the forward hierarchical differences adjacency matrix. The second and third elements of the tuple are the mean of this distribution of forward hierarchical differences and the standard deviation of this distribution of differences respectively. The standard deviation of the distribution is known as the forward hierarchical incoherence and is an important metric which gives a measure of a network's organisation and structure. 
 
 We can also calculate the forward democracy coefficient, a topological metric, for a graph:
 
@@ -72,7 +72,7 @@ This returns a single numerical value. We can also work out the forward influenc
 gh.forward_influence_centrality(graph, None)
 ```
 
-The return of this function is an $N \times 1$ dimensional array indexed by the nodes with values of their respective forward influence centralities in the same order as graph.nodes(). A final function returns all the possible node, edge and graph metrics so far developed in this theory.
+The return of this function is an $N \times 1$ dimensional array indexed by the nodes with values of their respective forward influence centralities in the same order as graph.nodes(). A final function returns all the possible node, edge and graph metrics so far developed in this theory. This is in order of the tuple index, hierarchical level vector, influence centrality vector, trophic difference adjacency matrix in sparse format, democracy coefficient and hierarchical incoherence.
 
 ```sh
 gh.forward_hierarchical_metrics(graph, None)
