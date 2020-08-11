@@ -67,7 +67,7 @@ def backward_hierarchical_levels(graph, weight):
 
 
 def hierarchical_levels(graph, weight):
-    """Returns the hierarchical levels of the nodes of a network as an array.
+    """Returns the hierarchical levels of the nodes of a network as an array which aids visualisation of the hierarchical structure in the network.
     
     Parameters
     ----------
@@ -107,7 +107,7 @@ def forward_hierarchical_differences(graph, weight):
     
     Returns
     -------
-     forward hierarchical differences : array
+    forward hierarchical differences : array
         A NxN dimensional array representing a weighted adjancency matrix, with the edge weights corresponding to the forward hierarchical differences. 
         The column index represents the source node of the edge and the row index represents the destination node of the edge.
         
@@ -142,7 +142,7 @@ def backward_hierarchical_differences(graph, weight):
     
     Returns
     -------
-     hierarchical differences : array
+    backward hierarchical differences : array
         A NxN dimensional array representing a weighted adjancency matrix, with the edge weights corresponding to the backward hierarchical differences. 
         The column index represents the source node of the edge and the row index represents the destination node of the edge.
         
@@ -205,7 +205,7 @@ def sparse_matrix_mean(sparse_matrix):
 
 
 
-def forrward_hierarchical_coherence(graph, weight):
+def forward_hierarchical_incoherence(graph, weight):
     """Returns the forward hierarchical differences over the edges of a network in the form of a weighted adjacency matrix,
     mean of the distribution of differences and standard deviation of this distribution.
     
@@ -217,7 +217,7 @@ def forrward_hierarchical_coherence(graph, weight):
     weight :  string or None
         If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute
     
-     Returns
+    Returns
     -------
     forward hierarchical differences : array
         A NxN dimensional array representing a weighted adjancency matrix, with the edge weights corresponding to the forward hierarchical differences. 
@@ -226,7 +226,7 @@ def forrward_hierarchical_coherence(graph, weight):
     mean hierarchical difference : float
         The mean of the distribution of forward hierarchical differences.
     
-    hierarchical coherence : float
+    forward hierarchical incoherence : float
         The standard deviation of the distribution of forward hierarchical differences.
         
     References
@@ -243,7 +243,7 @@ def forrward_hierarchical_coherence(graph, weight):
 
 
 
-def backward_hierarchical_coherence(graph, weight):
+def backward_hierarchical_incoherence(graph, weight):
     """Returns the backward  hierarchical differences over the edges of a network in the form of a weighted adjacency matrix,
     mean of the distribution of differences and standard deviation of this distribution.
     
@@ -255,7 +255,7 @@ def backward_hierarchical_coherence(graph, weight):
     weight :  string or None
         If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute
     
-     Returns
+    Returns
     -------
     backward hierarchical differences : array
         A NxN dimensional array representing a weighted adjancency matrix, with the edge weights corresponding to the backward hierarchical differences. 
@@ -264,7 +264,7 @@ def backward_hierarchical_coherence(graph, weight):
     mean hierarchical difference : float
         The mean of the distribution of backward hierarchical differences.
     
-    hierarchical coherence : float
+    backward hierarchical incoherence : float
         The standard deviation of the distribution of backward hierarchical differences.
         
     References
@@ -299,6 +299,7 @@ def forward_democracy_coefficient(graph, weight):
     -------
     forward democracy coefficient : float
         forward democracy coefficient of a graph
+        
     References
     ----------
     .. [1] Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). 
@@ -327,6 +328,7 @@ def backward_democracy_coefficient(graph, weight):
     -------
     backward democracy coefficient : float
         backward democracy coefficient of a graph
+        
     References
     ----------
     .. [1] Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). 
@@ -351,7 +353,7 @@ def forward_influence_centrality(graph, weight):
     weight :  string or None
         If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute.
     
-     Returns
+    Returns
     -------
     forward influence centrality : array
         A Nx1 dimensional array indexed by the nodes, in the same order as graph.nodes, holding the value of their forward influence centralities.
@@ -381,7 +383,7 @@ def backward_influence_centrality(graph, weight):
     weight :  string or None
         If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute.
     
-     Returns
+    Returns
     -------
     backward influence centrality : array
         A Nx1 dimensional array indexed by the nodes, in the same order as graph.nodes, holding the value of their backward influence centralities.
@@ -462,10 +464,34 @@ def node_backward_influence_centrality(graph, weight, node):
 
 
 
-
-
 def forward_hierarchical_metrics(graph, weight):
     ''' This function returns all the foundational node, edge and graph metrics a forward hierarchical/trophic approach yields.
+    
+    Parameters
+    ----------
+    graph : graph
+       A NetworkX graph
+       
+    weight :  string or None
+        If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute.
+    
+    Returns
+    -------
+    forward hierarchical levels : array
+        A Nx1 dimensional array indexed by the nodes, in the same order as graph.nodes, holding the value of their forward hierarchical levels.
+        
+    forward influence centrality : array
+        A Nx1 dimensional array indexed by the nodes, in the same order as graph.nodes, holding the value of their forward influence centralities.
+    
+    forward hierarchical differences : array
+        A NxN dimensional array representing a weighted adjancency matrix, with the edge weights corresponding to the forward hierarchical differences. 
+        The column index represents the source node of the edge and the row index represents the destination node of the edge.
+     
+    forward democracy coefficient : float
+        forward democracy coefficient of a graph
+    
+    forward hierarchical incoherence : float
+        The standard deviation of the distribution of forward hierarchical differences.
     
     References
     ----------
@@ -481,11 +507,12 @@ def forward_hierarchical_metrics(graph, weight):
     for i, j in zip(A.nonzero()[0], A.nonzero()[1]):
         TD[i,j] = s[i] - s[j]
     
-    m = sparse_matrix_mean(TD)    
+    m = sparse_matrix_mean(TD)  
+    dc = 1 - m
     std = (sparse_matrix_mean(TD.power(2).tocsr()) - m**2)**0.5
     ic = forward_influence_centrality(graph, weight)
     
-    return s, ic, TD, m, std 
+    return s, ic, TD, dc, std 
 
 
 
@@ -493,6 +520,32 @@ def forward_hierarchical_metrics(graph, weight):
 
 def backward_hierarchical_metrics(graph, weight):
     ''' This function returns all the foundational node, edge and graph metrics a backward hierarchical/trophic approach yields.
+    
+    Parameters
+    ----------
+    graph : graph
+       A NetworkX graph
+       
+    weight :  string or None
+        If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute.
+    
+    Returns
+    -------
+    backward hierarchical levels : array
+        A Nx1 dimensional array indexed by the nodes, in the same order as graph.nodes, holding the value of their backward hierarchical levels.
+        
+    backward influence centrality : array
+        A Nx1 dimensional array indexed by the nodes, in the same order as graph.nodes, holding the value of their backward influence centralities.
+    
+    backward hierarchical differences : array
+        A NxN dimensional array representing a weighted adjancency matrix, with the edge weights corresponding to the backward hierarchical differences. 
+        The column index represents the source node of the edge and the row index represents the destination node of the edge.
+     
+    backward democracy coefficient : float
+        backward democracy coefficient of a graph
+    
+    backward hierarchical incoherence : float
+        The standard deviation of the distribution of backward hierarchical differences.
     
     References
     ----------
@@ -508,8 +561,9 @@ def backward_hierarchical_metrics(graph, weight):
     for i, j in zip(A.nonzero()[0], A.nonzero()[1]):
         TD[i,j] = s[i] - s[j]
     
-    m = sparse_matrix_mean(TD)    
+    m = sparse_matrix_mean(TD)
+    dc = 1 - m    
     std = (sparse_matrix_mean(TD.power(2).tocsr()) - m**2)**0.5
     ic = backward_influence_centrality(graph, weight)
     
-    return s, ic, TD, m, std 
+    return s, ic, TD, dc, std 
