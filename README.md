@@ -50,7 +50,7 @@ This returns a weighted adjacency matrix, an $N \times N $ dimensional array wit
 The function forward hierarchical coherence returns the forward hierarchical differences and associated mean and standard deviation of this distribution:
 
 ```sh
-gh.forward_hierarchical_coherence(graph, None)
+gh.forward_hierarchical_incoherence(graph, None)
 ```
 
 This returns a three element tuple, the first element is the forward hierarchical differences adjacency matrix. The second and third elements of the tuple are the mean of this distribution of forward hierarchical differences and the standard deviation of this distribution of differences respectively. The standard deviation of the distribution is known as the forward hierarchical coherence and is an important metric which gives a measure of a network's organisation and structure. 
