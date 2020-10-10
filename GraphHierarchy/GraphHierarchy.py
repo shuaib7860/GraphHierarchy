@@ -59,10 +59,10 @@ def backward_hierarchical_levels(graph, weight):
     arXiv preprint arXiv:1908.04358."""
     
     A = adjacency_matrix(graph, weight=weight)
-    k_out = csr_matrix(A.sum(axis=1))
-    D_out = diags(A.sum(axis=1).A1, 0)
-    L_out = D_out - A
-    return lsqr(L_out, k_out.toarray())[0]
+    k_in = csr_matrix(A.sum(axis=1))
+    D_in = diags(A.sum(axis=1).A1, 0)
+    L_in = D_in - A
+    return lsqr(L_in, k_in.toarray())[0]
 
 
 
