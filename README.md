@@ -39,13 +39,13 @@ The fourth line of code in the above script is a function call to visualise the 
 ```sh
 gh.forward_hierarchical_levels(graph)
 ```
-This returns an $ N \times 1 $ dimensional array of the forward hierarchical levels indexed by the nodes in the ordering of graph.nodes. When there is a weight parameter, the corresponding attribute should be input as a string as the second parameter in the function call. If one wants to calculate the forward hierarchical differences:
+This returns an N$\times$1 dimensional array of the forward hierarchical levels indexed by the nodes in the ordering of graph.nodes. When there is a weight parameter, the corresponding attribute should be input as a string as the second parameter in the function call. If one wants to calculate the forward hierarchical differences:
 
 ```sh
 gh.forward_hierarchical_differences(graph)
 ```
 
-This returns a weighted adjacency matrix, an $ N \times N $ dimensional array with the weights representing the forward hierarchical differences. 
+This returns a weighted adjacency matrix, an N$\times$N dimensional array with the weights representing the forward hierarchical differences. 
 
 The function forward hierarchical incoherence returns the forward hierarchical differences sparse array and the associated mean and standard deviation of this distribution:
 
@@ -72,16 +72,16 @@ This returns a single value. We can also work out the forward influence centrali
 gh.forward_influence_centrality(graph)
 ```
 
-The return of this function is an $ N \times 1 $ dimensional array indexed by the nodes with values of their respective forward influence centralities in the same order as graph.nodes(). A final function returns all the possible node, edge and graph metrics developed in this theory. This is in order of the tuple index, hierarchical level vector, influence centrality vector, hierarchical difference adjacency matrix in sparse format, democracy coefficient and hierarchical incoherence.
+The return of this function is an N$\times$1 dimensional array indexed by the nodes with values of their respective forward influence centralities in the same order as graph.nodes(). A final function returns all the possible node, edge and graph metrics developed in this theory. This is in order of the tuple index, hierarchical level vector, influence centrality vector, hierarchical difference adjacency matrix in sparse format, democracy coefficient and hierarchical incoherence.
 
 ```sh
-gh.forward_hierarchical_metrics(graph, None)
+gh.forward_hierarchical_metrics(graph)
 ```
 
 Each of the functions described above has a corresponding backward version which analyses the transpose of the adjacency matrix. The differing perspectives prove useful depending on the scenario being studied.  There is also a function named hierarchical levels, which takes the difference between the forward and backward notions of hierarchical levels to account for both perspectives and can be used when drawing a graph to reveal it's overall hierarchical structure. Ideal for layered graph drawing. 
 
 ```sh
-gh.hierarchical_levels(graph, None)
+gh.hierarchical_levels(graph)
 ```
 
 This exhausts all the functions that are currently available in the module but we hope to add some more in newer versions of the module. 
