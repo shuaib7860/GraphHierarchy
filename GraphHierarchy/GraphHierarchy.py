@@ -38,7 +38,7 @@ def forward_hierarchical_levels(graph, weight=None):
         k_in = A.sum(axis=1).A1
        
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight).transpose()
+        A = adjacency_matrix(graph, weight=weight).transpose()
         k_in = A.sum(axis=1).A1
         
         
@@ -82,7 +82,7 @@ def backward_hierarchical_levels(graph, weight=None):
         k_in = A.sum(axis=1).A1
        
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight)
+        A = adjacency_matrix(graph, weight=weight)
         k_in = A.sum(axis=1).A1
         
         
@@ -116,7 +116,7 @@ def hierarchical_levels(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    return forward_hierarchical_levels(graph, weight) - backward_hierarchical_levels(graph, weight)
+    return forward_hierarchical_levels(graph, weight=weight) - backward_hierarchical_levels(graph, weight=weight)
 
 
 
@@ -128,9 +128,9 @@ def sparse_forward_hierarchical_differences(graph, weight=None):
         A = graph.transpose()
        
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight).transpose()
+        A = adjacency_matrix(graph, weight=weight).transpose()
     
-    s = forward_hierarchical_levels(graph, weight)
+    s = forward_hierarchical_levels(graph, weight=weight)
     TD = lil_matrix(A.shape, dtype=float)
     
     for i, j in zip(A.nonzero()[0], A.nonzero()[1]):
@@ -163,7 +163,7 @@ def forward_hierarchical_differences(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    TD = sparse_forward_hierarchical_differences(graph, weight)
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight)
     return TD.toarray()
 
 
@@ -179,7 +179,7 @@ def sparse_backward_hierarchical_differences(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
         
-    s = backward_hierarchical_levels(graph, weight)
+    s = backward_hierarchical_levels(graph, weight=weight)
     TD = lil_matrix(A.shape, dtype=float)
     
     for i, j in zip(A.nonzero()[0], A.nonzero()[1]):
@@ -212,7 +212,7 @@ def backward_hierarchical_differences(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    TD = sparse_backward_hierarchical_differences(graph, weight)
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight)
    
     return TD.toarray()
 
@@ -260,7 +260,7 @@ def forward_hierarchical_incoherence(graph, weight=None):
         tot = float(A.count_nonzero())
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight).transpose()
+        A = adjacency_matrix(graph, weight=weight).transpose()
         tot = float(A.count_nonzero())
         
     TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
@@ -315,10 +315,10 @@ def backward_hierarchical_incoherence(graph, weight=None):
         tot = float(A.count_nonzero())
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight)
+        A = adjacency_matrix(graph, weight=weight)
         tot = float(A.count_nonzero())
         
-    TD = sparse_backward_hierarchical_differences(graph, weight)
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight)
     m = (TD.sum()) / tot
     
     TD2 = TD.power(2)
@@ -364,10 +364,10 @@ def forward_democracy_coefficient(graph, weight=None):
         tot = float(A.count_nonzero())
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight).transpose()
+        A = adjacency_matrix(graph, weight=weight).transpose()
         tot = float(A.count_nonzero())
         
-    TD = sparse_forward_hierarchical_differences(graph, weight)
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight)
     m = (TD.sum()) / tot
     
     return 1 - m
@@ -408,10 +408,10 @@ def backward_democracy_coefficient(graph, weight=None):
         tot = float(A.count_nonzero())
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight)
+        A = adjacency_matrix(graph, weight=weight)
         tot = float(A.count_nonzero())
         
-    TD = sparse_backward_hierarchical_differences(graph, weight)
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight)
     m = (TD.sum()) / tot
     
     return 1 - m
@@ -453,10 +453,10 @@ def node_forward_influence_centrality(graph, node, weight=None):
         tot = float(A[node].count_nonzero())
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight).transpose()
+        A = adjacency_matrix(graph, weight=weight).transpose()
         tot = float(A[node].count_nonzero())
         
-    TD = sparse_forward_hierarchical_differences(graph, weight).tocsr()
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
     if A[node].sum() == 0:
         m = 0
     else:
@@ -502,10 +502,10 @@ def node_backward_influence_centrality(graph, node, weight=None):
         tot = float(A[node].count_nonzero())
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight)
+        A = adjacency_matrix(graph, weight=weight)
         tot = float(A[node].count_nonzero())
         
-    TD = sparse_backward_hierarchical_differences(graph, weight).tocsr()
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
     if A[node].sum() == 0:
         m = 0
     else:
@@ -544,9 +544,9 @@ def forward_influence_centrality(graph, weight=None):
         A = graph.transpose()
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight).transpose()
+        A = adjacency_matrix(graph, weight=weight).transpose()
         
-    TD = sparse_forward_hierarchical_differences(graph, weight).tocsr()
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
     m = zeros((TD.shape[0], 1))
     
     for i in range(m.shape[0]):
@@ -588,9 +588,9 @@ def backward_influence_centrality(graph, weight=None):
         A = graph
         
     elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight)
+        A = adjacency_matrix(graph, weight=weight)
         
-    TD = sparse_forward_hierarchical_differences(graph, weight).tocsr()
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
     m = zeros((TD.shape[0], 1))
     
     for i in range(m.shape[0]):
@@ -641,9 +641,9 @@ def forward_hierarchical_metrics(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358.
     '''
-    s = forward_hierarchical_levels(graph, weight)
-    ic = forward_influence_centrality(graph, weight)
-    a = forward_hierarchical_incoherence(graph, weight)
+    s = forward_hierarchical_levels(graph, weight=weight)
+    ic = forward_influence_centrality(graph, weight=weight)
+    a = forward_hierarchical_incoherence(graph, weight=weight)
     
     return s, ic, a[0], 1 - a[1], a[2] 
 
@@ -688,9 +688,9 @@ def backward_hierarchical_metrics(graph, weight=None):
     arXiv preprint arXiv:1908.04358.
     '''
     
-    s = backward_hierarchical_levels(graph, weight)
-    ic = backward_influence_centrality(graph, weight)
-    a = backward_hierarchical_incoherence(graph, weight)
+    s = backward_hierarchical_levels(graph, weight=weight)
+    ic = backward_influence_centrality(graph, weight=weight)
+    a = backward_hierarchical_incoherence(graph, weight=weight)
     
     return s, ic, a[0], 1 - a[1], a[2] 
 
