@@ -20,7 +20,7 @@ setuptools.setup(
   author = 'Choudhry Shuaib',                   
   author_email = 'cshuaib@outlook.com',      
   url = 'https://github.com/shuaib7860/GraphHierarchy',   
-  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v1.4.tar.gz',
+  download_url = 'https://github.com/shuaib7860/GraphHierarchy/archive/v1.5.tar.gz',
   keywords = ['Graph Hierarchy', 'Trophic Coherence', 'Hierarchical Coherence', 'Trophic Levels', 'Hierarchical Levels', 'Influence Centrality', 'Democracy Coefficient'],
   install_requires=[
           'numpy',
