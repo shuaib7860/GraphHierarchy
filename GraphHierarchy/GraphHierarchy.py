@@ -122,7 +122,7 @@ def hierarchical_levels(graph, weight=None):
 
 
 def sparse_forward_hierarchical_differences(graph, weight=None):
-    ''' Just a copy of the forward hierarchical differences function that returns the sparse matrix instead of the dense representation'''
+    ''' Just a copy of the forward hierarchical differences function that returns the sparse matrix, instead of the dense representation, in lil format'''
     
     if isinstance(graph, (ndarray, spmatrix)):
         A = graph.transpose()
@@ -171,7 +171,7 @@ def forward_hierarchical_differences(graph, weight=None):
 
 
 def sparse_backward_hierarchical_differences(graph, weight=None):
-    ''' Just a copy of the backward hierarchical differences function that returns the sparse matrix instead of the dense representation'''
+    ''' Just a copy of the backward hierarchical differences function that returns the sparse matrix, instead of the dense representation, in lil format'''
     
     if isinstance(graph, (ndarray, spmatrix)):
         A = graph
@@ -185,7 +185,7 @@ def sparse_backward_hierarchical_differences(graph, weight=None):
     for i, j in zip(A.nonzero()[0], A.nonzero()[1]):
         TD[i,j] = s[i] - s[j]
    
-    return TD.toarray()
+    return TD
 
 
 def backward_hierarchical_differences(graph, weight=None):
@@ -256,11 +256,11 @@ def forward_hierarchical_incoherence(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
         
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
-    m = (TD.sum()) / A.sum()
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+    m = (A.multiply(TD)).sum() / A.sum()
     
     TD2 = TD.power(2)
-    m2 = (TD2.sum()) / A.sum()
+    m2 =  (A.multiply(TD2)).sum() / A.sum()
     
     std = (m2 - m**2)**0.5    
     return TD, m, std
@@ -305,11 +305,11 @@ def backward_hierarchical_incoherence(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
         
-    TD = sparse_backward_hierarchical_differences(graph, weight=weight)
-    m = (TD.sum()) / A.sum()
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+    m = (A.multiply(TD)).sum() / A.sum()
     
     TD2 = TD.power(2)
-    m2 = (TD2.sum()) / A.sum()
+    m2 = (A.multiply(TD2)).sum() / A.sum()
     
     std = (m2 - m**2)**0.5    
     return TD, m, std
@@ -348,8 +348,8 @@ def forward_democracy_coefficient(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
         
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight)
-    m = (TD.sum()) / A.sum()
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+    m = (A.multiply(TD)).sum() / A.sum()
     
     return 1 - m
 
@@ -386,8 +386,8 @@ def backward_democracy_coefficient(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
         
-    TD = sparse_backward_hierarchical_differences(graph, weight=weight)
-    m = (TD.sum()) / A.sum()
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+    m = (A.multiply(TD)).sum() / A.sum()
     
     return 1 - m
 
@@ -421,15 +421,18 @@ def node_forward_influence_centrality(graph, node, weight=None):
     
     if isinstance(graph, (ndarray, spmatrix)):
         A = graph.transpose()
+        index = node
         
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
+        index = list(graph.nodes).index(node)
         
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
-    if A[node].sum() == 0:
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+
+    if A[index].sum() == 0:
         m = 0
     else:
-        m = (TD[node].sum()) / A[node].sum()
+        m = (A[index].multiply(TD[index])).sum() / A[index].sum()
     return 1 - m
 
 
@@ -444,11 +447,11 @@ def node_backward_influence_centrality(graph, node, weight=None):
        A NetworkX graph or numpy/sparse array
         
     node : number
-        If you have weighted edges insert weight='string', where string is your underlying weight attribute. Only relevant if graph object is a networkx 
-        graph instance. Otherwise the default is None.
-        
+        Label of the node as determined by the indexing of the graph.nodes() call or the index of the numpy/sparse array.
+
     weight :  string or None
-        If you have no weighted edges insert weight=None, otherwise weight='string', where string is your underlying weight attribute
+        If you have weighted edges insert weight='string', where string is your underlying weight attribute. Only relevant if graph object is a networkx 
+        graph instance, otherwise the default is None.
     
     
     Returns
@@ -464,15 +467,18 @@ def node_backward_influence_centrality(graph, node, weight=None):
     
     if isinstance(graph, (ndarray, spmatrix)):
         A = graph
+        index = node
         
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
+        index = list(graph.nodes).index(node)
         
     TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
-    if A[node].sum() == 0:
+    
+    if A[index].sum() == 0:
         m = 0
     else:
-        m = (TD[node].sum()) / A[node].sum()
+        m = (A[index].multiply(TD[index])).sum() / A[index].sum()
     return 1 - m
 
 
@@ -488,7 +494,7 @@ def forward_influence_centrality(graph, weight=None):
        
     weight :  string or None
         If you have weighted edges insert weight='string', where string is your underlying weight attribute. Only relevant if graph object is a networkx 
-        graph instance. Otherwise the default is None.    
+        graph instance, otherwise the default is None.    
     Returns
     -------
     forward influence centrality : array
@@ -506,15 +512,17 @@ def forward_influence_centrality(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
         
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
+    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
     m = zeros((TD.shape[0], 1))
     
     for i in range(m.shape[0]):
         if A[i].sum() == 0:
             m[i] = 0
         else:
-            m[i] = (TD[i].sum()) / A[i].sum()
+            m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
     return ones((m.shape[0], 1)) - m
+
+
 
 
 
@@ -524,11 +532,11 @@ def backward_influence_centrality(graph, weight=None):
     Parameters
     ----------
     graph : Graph, array
-        A NetworkX graphnor numpy/sparse array
+        A NetworkX graph or numpy/sparse array
        
     weight :  string
         If you have weighted edges insert weight='string', where string is your underlying weight attribute. Only relevant if graph object is a networkx 
-        graph instance. Otherwise the default is None.
+        graph instance, otherwise the default is None.
         
     Returns
     -------
@@ -547,14 +555,14 @@ def backward_influence_centrality(graph, weight=None):
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
         
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsr()
+    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
     m = zeros((TD.shape[0], 1))
     
     for i in range(m.shape[0]):
         if A[i].sum() == 0:
             m[i] = 0
         else:
-            m[i] = (TD[i].sum()) / A[i].sum()
+            m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
     return ones((m.shape[0], 1)) - m
 
 
