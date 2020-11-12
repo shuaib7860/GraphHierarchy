@@ -1,8 +1,7 @@
-from numpy import zeros, ones, ndarray
+from numpy import zeros, ones, ndarray, average
 from networkx import adjacency_matrix, Graph
 from scipy.sparse import diags, lil_matrix, spmatrix
 from scipy.sparse.linalg import lsqr
-
 
 
 
@@ -250,17 +249,23 @@ def forward_hierarchical_incoherence(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    if isinstance(graph, (ndarray, spmatrix)):
+    if isinstance(graph, ndarray):
         A = graph.transpose()
+        TD = forward_hierarchical_differences(graph, weight=weight)
+        m = average(TD, weights=A)
+        m2 = average(TD**2, weights=A)
         
-    elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight=weight).transpose()
-        
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
-    m = (A.multiply(TD)).sum() / A.sum()
+    elif isinstance(graph, spmatrix):
+        A = graph.transpose()
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        m = (A.multiply(TD)).sum() / A.sum()
+        m2 =  (A.multiply(TD.power(2))).sum() / A.sum()
     
-    TD2 = TD.power(2)
-    m2 =  (A.multiply(TD2)).sum() / A.sum()
+    elif isinstance(graph, Graph):
+        A = adjacency_matrix(graph, weight=weight).transpose()    
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        m = (A.multiply(TD)).sum() / A.sum()
+        m2 =  (A.multiply(TD.power(2))).sum() / A.sum()
     
     std = (m2 - m**2)**0.5    
     return TD, m, std
@@ -298,18 +303,24 @@ def backward_hierarchical_incoherence(graph, weight=None):
     .. [1] Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). 
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
-    
-    if isinstance(graph, (ndarray, spmatrix)):
+
+    if isinstance(graph, ndarray):
         A = graph
+        TD = backward_hierarchical_differences(graph, weight=weight)
+        m = average(TD, weights=A)
+        m2 = average(TD**2, weights=A)
         
-    elif isinstance(graph, Graph):
-        A = adjacency_matrix(graph, weight=weight)
-        
-    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
-    m = (A.multiply(TD)).sum() / A.sum()
+    elif isinstance(graph, spmatrix):
+        A = graph
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        m = (A.multiply(TD)).sum() / A.sum()
+        m2 =  (A.multiply(TD.power(2))).sum() / A.sum()
     
-    TD2 = TD.power(2)
-    m2 = (A.multiply(TD2)).sum() / A.sum()
+    elif isinstance(graph, Graph):
+        A = adjacency_matrix(graph, weight=weight)  
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        m = (A.multiply(TD)).sum() / A.sum()
+        m2 =  (A.multiply(TD.power(2))).sum() / A.sum()
     
     std = (m2 - m**2)**0.5    
     return TD, m, std
@@ -342,15 +353,21 @@ def forward_democracy_coefficient(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    if isinstance(graph, (ndarray, spmatrix)):
+    if isinstance(graph, ndarray):
         A = graph.transpose()
+        TD = forward_hierarchical_differences(graph, weight=weight)
+        m = average(TD, weights=A)
+        
+    elif isinstance(graph, spmatrix):
+        A = graph.transpose()
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        m = (A.multiply(TD)).sum() / A.sum()
         
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        m = (A.multiply(TD)).sum() / A.sum()
         
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
-    m = (A.multiply(TD)).sum() / A.sum()
-    
     return 1 - m
 
 
@@ -380,14 +397,20 @@ def backward_democracy_coefficient(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    if isinstance(graph, (ndarray, spmatrix)):
+    if isinstance(graph, ndarray):
         A = graph
+        TD = backward_hierarchical_differences(graph, weight=weight)
+        m = average(TD, weights=A)
+        
+    elif isinstance(graph, spmatrix):
+        A = graph
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        m = (A.multiply(TD)).sum() / A.sum()
         
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
-        
-    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
-    m = (A.multiply(TD)).sum() / A.sum()
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        m = (A.multiply(TD)).sum() / A.sum()
     
     return 1 - m
 
@@ -419,20 +442,33 @@ def node_forward_influence_centrality(graph, node, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    if isinstance(graph, (ndarray, spmatrix)):
+    if isinstance(graph, ndarray):
         A = graph.transpose()
         index = node
+        TD = forward_hierarchical_differences(graph, weight=weight) 
+        if A[index].sum() == 0:
+            m = 0
+        else:
+            m = average(TD[index], weights=A[index])
         
+    elif isinstance(graph, spmatrix):
+        A = graph.transpose()
+        index = node
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        if A[index].sum() == 0:
+            m = 0
+        else:
+            m = (A[index].multiply(TD[index])).sum() / A[index].sum()
+            
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
         index = list(graph.nodes).index(node)
-        
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
-
-    if A[index].sum() == 0:
-        m = 0
-    else:
-        m = (A[index].multiply(TD[index])).sum() / A[index].sum()
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        if A[index].sum() == 0:
+            m = 0
+        else:
+            m = (A[index].multiply(TD[index])).sum() / A[index].sum()
+    
     return 1 - m
 
 
@@ -465,20 +501,33 @@ def node_backward_influence_centrality(graph, node, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    if isinstance(graph, (ndarray, spmatrix)):
+    if isinstance(graph, ndarray):
         A = graph
         index = node
+        TD = backward_hierarchical_differences(graph, weight=weight) 
+        if A[index].sum() == 0:
+            m = 0
+        else:
+            m = average(TD[index], weights=A[index])
         
+    elif isinstance(graph, spmatrix):
+        A = graph
+        index = node
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        if A[index].sum() == 0:
+            m = 0
+        else:
+            m = (A[index].multiply(TD[index])).sum() / A[index].sum()
+            
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
         index = list(graph.nodes).index(node)
-        
-    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        if A[index].sum() == 0:
+            m = 0
+        else:
+            m = (A[index].multiply(TD[index])).sum() / A[index].sum()
     
-    if A[index].sum() == 0:
-        m = 0
-    else:
-        m = (A[index].multiply(TD[index])).sum() / A[index].sum()
     return 1 - m
 
 
@@ -506,20 +555,39 @@ def forward_influence_centrality(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    if isinstance(graph, (ndarray, spmatrix)):
+    if isinstance(graph, ndarray):
         A = graph.transpose()
+        TD = forward_hierarchical_differences(graph, weight=weight)
+        m = zeros((TD.shape[0], 1))
+    
+        for i in range(m.shape[0]):
+            if A[i].sum() == 0:
+                m[i] = 0
+            else:
+                m[i] = average(TD[i], weights=A[i])
+        
+    elif isinstance(graph, spmatrix):
+        A = graph.transpose()
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        m = zeros((TD.shape[0], 1))
+    
+        for i in range(m.shape[0]):
+            if A[i].sum() == 0:
+                m[i] = 0
+            else:
+                m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
         
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight).transpose()
-        
-    TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
-    m = zeros((TD.shape[0], 1))
+        TD = sparse_forward_hierarchical_differences(graph, weight=weight).tocsc()
+        m = zeros((TD.shape[0], 1))
     
-    for i in range(m.shape[0]):
-        if A[i].sum() == 0:
-            m[i] = 0
-        else:
-            m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
+        for i in range(m.shape[0]):
+            if A[i].sum() == 0:
+                m[i] = 0
+            else:
+                m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
+    
     return ones((m.shape[0], 1)) - m
 
 
@@ -548,21 +616,40 @@ def backward_influence_centrality(graph, weight=None):
     .. [1] Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). 
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
-        
-    if isinstance(graph, (ndarray, spmatrix)):
+            
+    if isinstance(graph, ndarray):
         A = graph
+        TD = backward_hierarchical_differences(graph, weight=weight)
+        m = zeros((TD.shape[0], 1))
+    
+        for i in range(m.shape[0]):
+            if A[i].sum() == 0:
+                m[i] = 0
+            else:
+                m[i] = average(TD[i], weights=A[i])
+        
+    elif isinstance(graph, spmatrix):
+        A = graph
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        m = zeros((TD.shape[0], 1))
+    
+        for i in range(m.shape[0]):
+            if A[i].sum() == 0:
+                m[i] = 0
+            else:
+                m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
         
     elif isinstance(graph, Graph):
         A = adjacency_matrix(graph, weight=weight)
-        
-    TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
-    m = zeros((TD.shape[0], 1))
+        TD = sparse_backward_hierarchical_differences(graph, weight=weight).tocsr()
+        m = zeros((TD.shape[0], 1))
     
-    for i in range(m.shape[0]):
-        if A[i].sum() == 0:
-            m[i] = 0
-        else:
-            m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
+        for i in range(m.shape[0]):
+            if A[i].sum() == 0:
+                m[i] = 0
+            else:
+                m[i] = (A[i].multiply(TD[i])).sum() / A[i].sum()
+                
     return ones((m.shape[0], 1)) - m
 
 
