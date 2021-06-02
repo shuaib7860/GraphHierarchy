@@ -115,7 +115,7 @@ def hierarchical_levels(graph, weight=None):
     Graph hierarchy and spread of infections. 
     arXiv preprint arXiv:1908.04358."""
     
-    return forward_hierarchical_levels(graph, weight=weight) - backward_hierarchical_levels(graph, weight=weight)
+    return 0.5*(forward_hierarchical_levels(graph, weight=weight) - backward_hierarchical_levels(graph, weight=weight))
 
 
 
