@@ -15,7 +15,7 @@ See Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and
 setuptools.setup(
   name = 'GraphHierarchy',
   packages = ['GraphHierarchy'],   
-  version = '1.7',      
+  version = '1.8',      
   license='MIT',        
   description = 'A module calculating quantities related to a network metric known as trophic coherence but now generalised to all networks, see Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019). Graph hierarchy and spread of infections. arXiv preprint arXiv:1908.04358 for more details.',
   long_description = LONG_DESCRIPTION,
