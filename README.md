@@ -1,6 +1,6 @@
 # Graph Hierarchy
 
-**Citation info**:  Moutsinas, G., Shuaib, C., Guo, W., & Jarvis, S. (2019), Graph hierarchy and spread of infections, arXiv preprint arXiv:1908.04358
+**Citation info**:  Moutsinas, G., Shuaib, C., Guo, W. et al. Graph hierarchy: a novel framework to analyse hierarchical structures in complex networks. Sci Rep 11, 13943 (2021). https://doi.org/10.1038/s41598-021-93161-4
 
 ## Overview
 Trophic levels and hence trophic incoherence can be defined only on networks with well defined source nodes. Trophic incoherence, a measure of a network’s hierarchical organisation, has been shown to be linked to a network’s structural and dynamical aspects. Thus trophic analysis of networks had been restricted to the ecological domain, until now. In GraphHierarchy we have created the python code which implements the mathematical generalisation of the trophic coherence theory, known as hierarchical analysis, to all networks. See citation info for more details. 
