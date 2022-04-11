@@ -88,12 +88,12 @@ This exhausts all the functions that are currently available in the module but w
 
 
 # More Info
-Fore more details on the mathematics behind these graph metrics see this [article] on arxiv. 
+Fore more details on the mathematics behind these graph metrics see this [article] on Nature Scientific Reports. 
 
 License
 ----
 
 MIT
 
-[article]: <https://arxiv.org/abs/1908.04358>
+[article]: <https://www.nature.com/articles/s41598-021-93161-4>
 [public repository]: <https://github.com/shuaib7860/GraphHierarchy>
