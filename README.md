@@ -15,7 +15,7 @@ Trophic levels and hence trophic incoherence can be defined only on networks wit
 
 ### Installation
 
-The dependencies of the GraphHierarchy module are numpy, scipy and networkx. Only networkx 2.8.8 or below is suitbale to use with GraphHierarchy for now. I do plan to update this in the future and will update the readme accordingly. GraphHierarchy can be installed via the pip command.
+The dependencies of the GraphHierarchy module are numpy, scipy and networkx. Only networkx 2.8.8 or below is suitable to use with GraphHierarchy for now. I do plan to update this in the future and will update the readme accordingly. GraphHierarchy can be installed via the pip command.
 
 ```sh
 pip install GraphHierarchy
